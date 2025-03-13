@@ -1,5 +1,9 @@
 # CLAUDE.md
 
+- The MCP documentation can be found in `typescript-sdk.md`.
+- Don't write comments unless it's to explain why a piece of code needs to be
+  there.
+
 ## Build/Run Commands
 
 - Install dependencies: `bun install`
@@ -11,6 +15,7 @@
 
 ## Code Style Guidelines
 
+- Use early exists instead of if/else.
 - **Formatting**: Use consistent indentation (2 spaces)
 - **Imports**: ESM format (import/export), sorted alphabetically
 - **Types**:

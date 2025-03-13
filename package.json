@@ -7,7 +7,7 @@
     "unity": "./build/index.js"
   },
   "scripts": {
-    "build": "tsc && chmod 755 build/index.js",
+    "build": "tsc",
     "dev": "bun run src/index.ts",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit"
