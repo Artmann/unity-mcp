@@ -1,0 +1,28 @@
+{
+  "name": "unity-mcp",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "unity": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "dev": "bun run src/index.ts",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.13.10",
+    "prettier": "^3.5.3"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}
