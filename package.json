@@ -1,7 +1,7 @@
 {
   "name": "unity-mcp",
   "author": "Christoffer Artmann",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Model Context Protocol server for Unity.",
   "license": "MIT",
   "homepage": "https://github.com/Artmann/unity-mcp",
@@ -15,7 +15,8 @@
   "module": "index.ts",
   "type": "module",
   "bin": {
-    "unity": "./build/index.js"
+    "unity": "./build/index.js",
+    "unity-mcp": "./build/index.js"
   },
   "files": [
     "build",
