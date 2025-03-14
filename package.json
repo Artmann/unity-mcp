@@ -2,6 +2,7 @@
   "name": "unity-mcp",
   "module": "index.ts",
   "type": "module",
+  "license": "MIT",
   "private": true,
   "bin": {
     "unity": "./build/index.js"
