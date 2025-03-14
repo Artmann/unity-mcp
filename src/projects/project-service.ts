@@ -20,6 +20,19 @@ export interface Project {
 }
 
 export class ProjectService {
+  async listFilesInProject(projectTitle: string): Promise<string[]> {
+    const projectList = await this.listProjects()
+    const project = projectList.find((p) => p.title === projectTitle)
+
+    if (!project) {
+      throw new Error(`Project with title ${projectTitle} not found`)
+    }
+
+    const files = await this.listFilesInDirectoryRecursively(project.path)
+
+    return files
+  }
+
   async listProjects(): Promise<Project[]> {
     const projectListFilePath = this.getUnityProjectsFilePath()
 
@@ -53,5 +66,48 @@ export class ProjectService {
     }
 
     return resolve(homedir(), '.config', 'UnityHub')
+  }
+
+  private async listFilesInDirectoryRecursively(
+    directoryPath: string
+  ): Promise<string[]> {
+    const files = await fs.readdir(directoryPath)
+
+    const filesWithStats = await Promise.all(
+      files.map(async (file) => {
+        const fullPath = join(directoryPath, file)
+        const stats = await fs.stat(fullPath)
+
+        return { fileName: file, fullPath, stats }
+      })
+    )
+
+    const filesInDirectory = filesWithStats.filter(
+      (file) =>
+        file.stats.isFile() &&
+        !file.fileName.startsWith('.') &&
+        !file.fileName.endsWith('.meta') &&
+        !file.fileName.startsWith('Lightmap')
+    )
+
+    const directories = filesWithStats.filter((file) =>
+      file.stats.isDirectory()
+    )
+
+    const ignoredDirectories = ['Library', 'Temp', 'obj', 'bin', '.git']
+
+    const filteredDirectories = directories.filter(
+      (directory) => !ignoredDirectories.includes(directory.fileName)
+    )
+    const filesInSubdirectories = await Promise.all(
+      filteredDirectories.map((directory) =>
+        this.listFilesInDirectoryRecursively(directory.fullPath)
+      )
+    )
+
+    return [
+      ...filesInDirectory.map((file) => file.fullPath),
+      ...filesInSubdirectories.flat()
+    ]
   }
 }

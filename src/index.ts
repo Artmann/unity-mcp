@@ -1,30 +1,60 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
+import { z } from 'zod'
+
 import {
+  handleListFilesInProject,
   handleListProjects,
-  listProjectsInputSchema
+  handleReadFile
 } from './projects/index.js'
 
-const server = new McpServer({
-  name: 'unity',
-  version: '1.0.0'
-})
+const server = new McpServer(
+  {
+    name: 'unity',
+    version: '1.0.0'
+  },
+  {
+    capabilities: {
+      tools: {}
+    }
+  }
+)
 
-// Use 'as any' as a temporary solution to get past the type issues
 server.tool(
-  'list_projects', 
+  'list_projects',
+  'Lists all available Unity projects.',
   {},
   async (args: {}) => {
-    return await handleListProjects(args);
+    return await handleListProjects(args)
   }
-) as any
+)
+
+server.tool(
+  'list_files_in_project',
+  'Lists all the files inside a Unity project.',
+  {
+    projectName: z.string().nonempty()
+  },
+  async (args: any) => {
+    return await handleListFilesInProject(args)
+  }
+)
+
+server.tool(
+  'read_file',
+  'Reads the contents of a file inside a Unity project.',
+  {
+    path: z.string().nonempty()
+  },
+  async (args: any) => {
+    return await handleReadFile(args)
+  }
+)
 
 async function main() {
   const transport = new StdioServerTransport()
 
   await server.connect(transport)
-
-  console.log('Unity MCP Server running on stdio')
 }
 
 main().catch((error) => {
