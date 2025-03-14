@@ -1,50 +1,82 @@
 # Unity MCP Server
 
-Model Context Protocol (MCP) server for Unity Hub integration. This server provides access to Unity project information through a standardized interface.
+MCP server to connect Claude with Unity projects. Built using the [Model Context Protocol SDK](https://github.com/modelcontextprotocol/typescript-sdk).
 
 ## Features
+- List all Unity projects 
+- Get detailed project information
+- Access project structure and files
 
-- List Unity projects from Unity Hub
-- Integration with MCP Inspector for testing
+## Configuration
 
-## Installation
-
-To install dependencies:
+### Run this project locally
+Run this project locally by cloning this repo
 
 ```bash
+git clone https://github.com/your-username/unity-mcp.git
+cd unity-mcp
 bun install
 ```
 
-## Usage
+Add this tool as an MCP server in Claude.
 
-To run the server:
+On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`  
+On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 
-```bash
-bun run src/index.ts
+```json
+{
+  "mcpServers": {
+    "unity": {
+      "command": "bun",
+      "args": ["run", "C:\\Users\\Artga\\Code\\unity-mcp\\src\\index.ts"]
+    }
+  }
+}
 ```
 
-To run with the MCP Inspector:
+### Requirements
+- Unity with projects configured
+- Bun runtime
 
-```bash
-bun run inspector
-```
+### Troubleshooting
+Please open an issue if you can't get this MCP working. Here are some tips:
+1. Make sure Unity is installed and you have some projects configured
+2. Check that the unity-mcp server can access the projects-v1.json file
+3. Ensure you have proper permissions for the Unity project directories
+
+This MCP will emit logs to stderr as specified in the MCP spec. On Mac the Claude Desktop app should emit these logs
+to `~/Library/Logs/Claude`. 
+On other platforms [you can find logs here](https://modelcontextprotocol.io/quickstart/user#getting-logs-from-claude-for-desktop).
 
 ## Development
 
-This project uses Bun as its JavaScript runtime and TypeScript for type safety.
-
+### Setup
 ```bash
-# Type check the project
+# Install dependencies
+bun install
+
+# Run the project
+bun run src/index.ts
+
+# Type check
 bun run typecheck
 
 # Format code
 bun run format
 ```
 
-## Requirements
+### Debugging
 
-- Unity Hub installed with projects configured
-- Bun runtime
+Since MCP servers run over stdio, debugging can be challenging. For the best debugging
+experience, we strongly recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector).
+
+You can launch the MCP Inspector with this command:
+
+```bash
+bun run inspector
+```
+
+Upon launching, the Inspector will display a URL that you can access in your browser to begin debugging.
 
 ## License
 
