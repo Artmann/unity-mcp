@@ -1,17 +1,33 @@
 {
   "name": "unity-mcp",
+  "author": "Christoffer Artmann",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for Unity.",
+  "license": "MIT",
+  "homepage": "https://github.com/Artmann/unity-mcp",
+  "keywords": [
+    "typescript",
+    "mcp",
+    "unity",
+    "blazing-fast",
+    "claude"
+  ],
   "module": "index.ts",
   "type": "module",
-  "license": "MIT",
-  "private": true,
   "bin": {
     "unity": "./build/index.js"
   },
+  "files": [
+    "build",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
-    "dev": "bun run src/index.ts",
     "format": "prettier --write .",
     "inspector": "bun run build ; bun x @modelcontextprotocol/inspector node build/index.js",
+    "prepare": "bun run build",
+    "start": "bun run src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
