@@ -1,7 +1,7 @@
 {
   "name": "unity-mcp",
   "author": "Christoffer Artmann",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Model Context Protocol server for Unity.",
   "license": "MIT",
   "homepage": "https://github.com/Artmann/unity-mcp",
