@@ -5,6 +5,13 @@
   "description": "Model Context Protocol server for Unity.",
   "license": "MIT",
   "homepage": "https://github.com/Artmann/unity-mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artmann/unity-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Artmann/unity-mcp/issues"
+  },
   "keywords": [
     "typescript",
     "mcp",
