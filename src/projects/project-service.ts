@@ -2,6 +2,8 @@ import fs from 'fs/promises'
 import { homedir } from 'os'
 import { join, resolve } from 'path'
 
+import { resolvePathInsideRoots } from './path-guard.js'
+
 export interface Project {
   architecture: string
   changeset: string
@@ -42,6 +44,16 @@ export class ProjectService {
     return Object.values(projectList.data).filter(
       (project: any) => project.title && project.path
     ) as Project[]
+  }
+
+  async readFileInProject(path: string): Promise<string> {
+    const projects = await this.listProjects()
+    const safePath = await resolvePathInsideRoots(
+      path,
+      projects.map((project) => project.path)
+    )
+
+    return await fs.readFile(safePath, 'utf-8')
   }
 
   private getUnityProjectsFilePath(): string {

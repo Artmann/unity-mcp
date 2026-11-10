@@ -1,6 +1,6 @@
-import fs from 'fs/promises'
 import { z } from 'zod'
 
+import { PathOutsideProjectError } from './path-guard.js'
 import { ProjectService } from './project-service.js'
 
 type ZodObjectParams<T> = z.ZodObject<{ [key in keyof T]: z.ZodType<T[key]> }>
@@ -85,7 +85,8 @@ export async function handleListFilesInProject({
 
 export async function handleReadFile({ path }: { path: string }) {
   try {
-    const data = await fs.readFile(path, 'utf-8')
+    const projectService = new ProjectService()
+    const data = await projectService.readFileInProject(path)
 
     return {
       content: [
@@ -98,15 +99,16 @@ export async function handleReadFile({ path }: { path: string }) {
   } catch (error) {
     console.error('Error reading file:', error)
 
+    const message =
+      error instanceof PathOutsideProjectError
+        ? error.message
+        : `Failed to read file at ${path}.`
+
     return {
       content: [
         {
           type: 'text' as const,
-          text: JSON.stringify(
-            { error: `Failed to read file at ${path}.` },
-            null,
-            2
-          )
+          text: JSON.stringify({ error: message }, null, 2)
         }
       ],
       isError: true
